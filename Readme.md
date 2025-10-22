@@ -92,6 +92,39 @@ if err != nil {
 }
 ```
 
+## Benchmarks
+
+The following benchmarks demonstrate the performance of different operations in GoSwift:
+
+```
+cpu: AMD EPYC 7763 64-Core Processor
+BenchmarkSet-2                  11319936                97.45 ns/op           40 B/op          2 allocs/op
+BenchmarkSetWithExpiry-2         3381864               485.6 ns/op           113 B/op          3 allocs/op
+BenchmarkGet-2                  75574640                19.07 ns/op            0 B/op          0 allocs/op
+BenchmarkExists-2               78714792                19.15 ns/op            0 B/op          0 allocs/op
+BenchmarkDel-2                   6834908               216.0 ns/op            40 B/op          2 allocs/op
+BenchmarkUpdate-2               10504995               170.5 ns/op            40 B/op          2 allocs/op
+BenchmarkHset-2                 11203929               123.6 ns/op            16 B/op          1 allocs/op
+BenchmarkHGet-2                 28004112                47.77 ns/op            0 B/op          0 allocs/op
+BenchmarkHGetAll-2              79354870                18.93 ns/op            0 B/op          0 allocs/op
+BenchmarkHMset-2                 1000000              1030 ns/op             409 B/op          4 allocs/op
+BenchmarkAllData-2               2179728               499.2 ns/op           336 B/op          2 allocs/op
+```
+
+Key observations from the benchmarks:
+
+- Get/Exists operations are extremely fast (~19 ns/op) with zero allocations
+- Basic Set operations are efficient (~97 ns/op)
+- Hash operations show good performance, especially HGetAll (~19 ns/op)
+- Set with expiry has higher overhead due to TTL management
+- HMset has the highest overhead due to handling multiple fields
+
+To run the benchmarks yourself:
+
+```bash
+go test -bench=. ./...
+```
+
 ## Usage
 
 ```go
